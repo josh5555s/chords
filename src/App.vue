@@ -120,8 +120,12 @@ export default {
         if (bass !== '' && bass != chord) {this.bass = `/${bass}`}
         else {this.bass = ''}
         if (this.inversionButton) { this.inversion = inversion }
-        this.chord = chord;
-        this.sleep();
+        if (chord !== this.chord) { 
+          this.chord = chord; 
+          this.sleep();
+        }
+        else { this.newChord(); }
+        
       },
       async sleep() {
         function sleep(ms) {
