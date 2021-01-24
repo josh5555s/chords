@@ -1,4 +1,5 @@
 <template>
+  <div>
     <div id="controls">
       <div class="control">
         <h3>Seconds</h3>
@@ -16,7 +17,8 @@
       </div>
     </div>
     <div id="display">
-    <h1>{{ chord }}<span id="inversion" v-html="inversion"></span>{{ bass }}</h1>
+     <h1>{{ chord }}<span id="inversion" v-html="inversion"></span>{{ bass }}</h1>
+    </div>
   </div>
 </template>
 
@@ -24,7 +26,7 @@
 export default {
   data() {
     return {
-      tempo: 2,
+      tempo: 5,
       chord: 'Chord',
       inversion: '',
       bass: '',
@@ -113,7 +115,10 @@ export default {
         else if (this.bassCounter === 0) {
           bass = '';
         }
-        if (bass !== '' && bass !== chord) {this.bass = `/${bass}`}
+        console.log(bass)
+        console.log(chord)
+        if (bass !== '' && bass != chord) {this.bass = `/${bass}`}
+        else {this.bass = ''}
         if (this.inversionButton) { this.inversion = inversion }
         this.chord = chord;
         this.sleep();
