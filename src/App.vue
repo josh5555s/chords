@@ -8,6 +8,10 @@
         <button v-on:click="tempoUp">+</button>
       </div>
       <div class="control">
+       <h3>Scale</h3>
+       <button @click="toggleScale">{{ scale }}</button>
+      </div>
+      <div class="control">
        <h3>Bass</h3>
        <button @click="bassWander">{{ bassButton }}</button>
       </div>
@@ -27,6 +31,7 @@ export default {
   data() {
     return {
       tempo: 5,
+      scale: 'Major',
       chord: 'Chord',
       inversion: '',
       bass: '',
@@ -52,17 +57,34 @@ export default {
       this.inversionButton = !this.inversionButton;
       if (!this.inversionButton) {this.inversion = ''}
     },
+    toggleScale() {
+      if (this.scale === "Major") {this.scale = "Minor"}
+      else if (this.scale === "Minor") {this.scale = "Major"}
+    },
     newChord() {
         function getRandomInt(max) {
           return Math.floor(Math.random() * Math.floor(max));
         }
-        let chord = getRandomInt(6)
-        if (chord === 0) { chord = "I" }
-        else if (chord === 1) { chord = "ii" }
-        else if (chord === 2) { chord = "iii" }
-        else if (chord === 3) { chord = "IV" }
-        else if (chord === 4) { chord = "V" }
-        else if (chord === 5) { chord = "vi" }
+        let chord = getRandomInt(7)
+        if (this.scale === "Major") {
+          if (chord === 0) { chord = "I" }
+          else if (chord === 1) { chord = "ii" }
+          else if (chord === 2) { chord = "iii" }
+          else if (chord === 3) { chord = "IV" }
+          else if (chord === 4) { chord = "V" }
+          else if (chord === 5) { chord = "vi" }
+          else if (chord === 6) { chord = "vii*" }
+        }
+        else if (this.scale === "Minor") {
+          if (chord === 0) { chord = "i" }
+          else if (chord === 1) { chord = "ii*" }
+          else if (chord === 2) { chord = "III" }
+          else if (chord === 3) { chord = "iv" }
+          else if (chord === 4) { chord = "v" }
+          else if (chord === 5) { chord = "VI" }
+          else if (chord === 6) { chord = "VII" }
+        }
+
 
         let inversion = getRandomInt(3)
         if (inversion === 0) { inversion = "" }
@@ -71,15 +93,27 @@ export default {
 
         let bass;
         if (this.bassCounter === 2) {
-          bass = getRandomInt(6)
-          if (bass === 0) { bass = "I" }
-          else if (bass === 1) { bass = "ii" }
-          else if (bass === 2) { bass = "iii" }
-          else if (bass === 3) { bass = "IV" }
-          else if (bass === 4) { bass = "V" }
-          else if (bass === 5) { bass = "vi" }
-        } 
-        else if (this.bassCounter === 1) {
+          bass = getRandomInt(7)
+          if (this.scale === "Major") {
+            if (bass === 0) { bass = "I" }
+            else if (bass === 1) { bass = "ii" }
+            else if (bass === 2) { bass = "iii" }
+            else if (bass === 3) { bass = "IV" }
+            else if (bass === 4) { bass = "V" }
+            else if (bass === 5) { bass = "vi" }
+            else if (bass === 6) { bass = "vii*" }
+          } 
+          else if (this.scale === "Minor") {
+            if (bass === 0) { bass = "i" }
+            else if (bass === 1) { bass = "ii*" }
+            else if (bass === 2) { bass = "III" }
+            else if (bass === 3) { bass = "iv" }
+            else if (bass === 4) { bass = "v" }
+            else if (bass === 5) { bass = "VI" }
+            else if (bass === 6) { bass = "VII" }
+          }
+        }
+        else if (this.scale === "Major" && this.bassCounter === 1) {
           bass = getRandomInt(2)
           if (chord === "I") {
             if (bass === 0) { bass = "I" }
@@ -111,12 +145,57 @@ export default {
             else if (bass === 1) { bass = "I" }
             else if (bass === 2) { bass = "iii" }
           }
+          else if (chord === "vii*") {
+            if (bass === 0) { bass = "vii*" }
+            else if (bass === 1) { bass = "ii" }
+            else if (bass === 2) { bass = "IV" }
+          }
+        }
+        else if (this.scale === "Minor" && this.bassCounter === 1) {
+          bass = getRandomInt(2)
+          if (chord === "i") {
+            if (bass === 0) { bass = "i" }
+            else if (bass === 1) { bass = "III" }
+            else if (bass === 2) { bass = "v" }
+          } 
+          else if (chord === "ii*") {
+            if (bass === 0) { bass = "ii*" }
+            else if (bass === 1) { bass = "iv" }
+            else if (bass === 2) { bass = "VI" }
+          }
+          else if (chord === "III") {
+            if (bass === 0) { bass = "III" }
+            else if (bass === 1) { bass = "v" }
+            else if (bass === 2) { bass = "VII" }
+          }
+          else if (chord === "iv") {
+            if (bass === 0) { bass = "iv" }
+            else if (bass === 1) { bass = "VI" }
+            else if (bass === 2) { bass = "i" }
+          }
+          else if (chord === "v") {
+            if (bass === 0) { bass = "v" }
+            else if (bass === 1) { bass = "VII" }
+            else if (bass === 2) { bass = "ii*" }
+          }
+          else if (chord === "VI") {
+            if (bass === 0) { bass = "VI" }
+            else if (bass === 1) { bass = "i" }
+            else if (bass === 2) { bass = "III" }
+          }
+          else if (chord === "VII") {
+            if (bass === 0) { bass = "VII" }
+            else if (bass === 1) { bass = "ii*" }
+            else if (bass === 2) { bass = "iv" }
+          }
         }
         else if (this.bassCounter === 0) {
           bass = '';
         }
-        console.log(bass)
-        console.log(chord)
+        // console.log(chord)
+        // console.log(bass)
+        // console.log(inversion)
+        
         if (bass !== '' && bass != chord) {this.bass = `/${bass}`}
         else {this.bass = ''}
         if (this.inversionButton) { this.inversion = inversion }
@@ -125,7 +204,6 @@ export default {
           this.sleep();
         }
         else { this.newChord(); }
-        
       },
       async sleep() {
         function sleep(ms) {
